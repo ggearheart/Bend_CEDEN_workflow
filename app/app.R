@@ -510,13 +510,4 @@ server <- function(input, output, session) {
   )
 }
 
-# ── Launch ─────────────────────────────────────────────────────────────────────
-
-if (interactive() || !exists("SHINY_PORT")) {
-  # Set working directory to repo root so relative paths work
-  repo_root <- normalizePath(file.path(dirname(sys.frame(1)$ofile), ".."),
-                              mustWork = FALSE)
-  if (dir.exists(repo_root)) setwd(repo_root)
-
-  shinyApp(ui, server)
-}
+shinyApp(ui, server)
