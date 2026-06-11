@@ -15,7 +15,7 @@ library(stringr)
 library(reactable)
 library(zip)
 
-# Source workflow functions (paths relative to repo root, set via setwd in run block)
+# shiny::runApp() sets cwd to the app directory; all paths are relative to app/
 source("R/01_parse_csv.R")
 source("R/02_transform_ceden.R")
 source("R/03_validate.R")

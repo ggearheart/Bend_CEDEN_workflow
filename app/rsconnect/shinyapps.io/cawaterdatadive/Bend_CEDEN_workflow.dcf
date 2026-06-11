@@ -1,0 +1,10 @@
+name: Bend_CEDEN_workflow
+title: Bend Genetics to CEDEN Workflow
+username: cawaterdatadive
+account: cawaterdatadive
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17498881
+bundleId: 12116326
+url: https://cawaterdatadive.shinyapps.io/Bend_CEDEN_workflow/
+version: 1

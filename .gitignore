@@ -5,4 +5,5 @@ data/output/
 .DS_Store
 *.Rhistory
 .Rproj.user/
-# keep templates/ tracked in git
+# keep templates/ and app/ subdirs tracked in git
+app/data/
