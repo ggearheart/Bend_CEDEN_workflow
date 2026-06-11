@@ -208,30 +208,3 @@ build_field <- function(df) {
       SampleComments = NA_character_
     )
 }
-
-# ---------- run -------------------------------------------------------------
-
-if (!exists("SOURCED_BY_MASTER")) {
-  bend_parsed <- readRDS("data/processed/bend_parsed.rds")
-
-  long_df <- bend_parsed %>%
-    pivot_to_long() %>%
-    map_result() %>%
-    join_analyte_map() %>%
-    join_matrix_map()
-
-  ceden_chem    <- build_chemistry(long_df)
-  ceden_chem_v2 <- build_chemistry_v2(long_df)
-  ceden_field   <- build_field(long_df)
-
-  saveRDS(ceden_chem,    "data/processed/ceden_chemistry.rds")
-  saveRDS(ceden_chem_v2, "data/processed/ceden_chemistry_v2.rds")
-  saveRDS(ceden_field,   "data/processed/ceden_field.rds")
-
-  message("Chemistry rows (v1): ", nrow(ceden_chem))
-  message("Chemistry rows (v2): ", nrow(ceden_chem_v2))
-  message("Field rows:          ", nrow(ceden_field))
-  message("Saved -> data/processed/ceden_chemistry.rds")
-  message("Saved -> data/processed/ceden_chemistry_v2.rds")
-  message("Saved -> data/processed/ceden_field.rds")
-}

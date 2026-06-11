@@ -46,14 +46,3 @@ parse_bend_csv <- function(csv_path) {
 }
 
 # Run when sourced directly
-if (!exists("SOURCED_BY_MASTER")) {
-  csv_files <- list.files("data/raw", pattern = "_results\\.csv$", full.names = TRUE)
-  if (length(csv_files) == 0) stop("No results CSV found in data/raw/")
-
-  parsed_list <- lapply(csv_files, parse_bend_csv)
-  bend_parsed <- bind_rows(parsed_list)
-
-  saveRDS(bend_parsed, "data/processed/bend_parsed.rds")
-  message("Parsed ", nrow(bend_parsed), " samples from ", length(csv_files), " CSV file(s).")
-  message("Saved -> data/processed/bend_parsed.rds")
-}

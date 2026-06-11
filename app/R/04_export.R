@@ -93,13 +93,3 @@ export_csv <- function(chem_df, field_df, output_dir = "data/output") {
     file.path(output_dir, paste0("CEDEN_FieldResults_", today, ".csv")))
   message("CSV exports written to ", output_dir)
 }
-
-if (!exists("SOURCED_BY_MASTER")) {
-  ceden_chem    <- readRDS("data/processed/ceden_chemistry.rds")
-  ceden_chem_v2 <- readRDS("data/processed/ceden_chemistry_v2.rds")
-  ceden_field   <- readRDS("data/processed/ceden_field.rds")
-
-  export_ceden(ceden_chem, ceden_field)     # legacy format
-  export_ceden_v2(ceden_chem_v2)            # CEDEN 2.0 official template
-  export_csv(ceden_chem, ceden_field)
-}

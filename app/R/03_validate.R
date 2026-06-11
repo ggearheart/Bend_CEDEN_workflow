@@ -72,12 +72,3 @@ validate_field <- function(df) {
 
   invisible(issues)
 }
-
-if (!exists("SOURCED_BY_MASTER")) {
-  library(glue)
-  ceden_chem  <- readRDS("data/processed/ceden_chemistry.rds")
-  ceden_field <- readRDS("data/processed/ceden_field.rds")
-
-  validate_chemistry(ceden_chem)
-  validate_field(ceden_field)
-}
