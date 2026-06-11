@@ -45,15 +45,24 @@ export_ceden <- function(chem_df, field_df, output_dir = "data/output") {
 }
 
 # ---------- CEDEN 2.0 export -----------------------------------------------
-# Writes data into the official CEDEN 2.0 Chemistry template, preserving the
-# Format Information, Constituent_Index, and Advanced_Vocabulary_Request sheets.
+
+CEDEN2_COLS <- c(
+  "#StationCode", "ProjectCode", "LabSampleID", "CollectionDateTime",
+  "SampleAgencyCode", "SampleTypeCode", "MatrixCode", "CollectionDepth",
+  "UnitCollectionDepth", "SampleComments", "PrepPreservationName",
+  "PrepPreservationDateTime", "DigestExtractMethod", "DigestExtractDateTime",
+  "LabBatch", "LabAgencyCode", "AnalysisDateTime", "MethodName",
+  "AnalyteName", "FractionName", "DilutionFactor", "TestType",
+  "ResultTypeCode", "Result", "UnitName", "DetectedAboveMDL",
+  "MethodDetectionLimit", "MinimumReportingLimit", "QACode",
+  "ExpectedValue", "PercentRecovery", "RelativePercentDifference",
+  "RelativeStandardDeviation", "LabComments", "ParticleSizeRange",
+  "QC_OriginalConc", "EQuIS_Sample_ID", "Parent_SampleID", "SampleID"
+)
 
 export_ceden_v2 <- function(chem_v2_df, output_dir = "data/output",
                              template = "templates/ceden2_chemistry_template.xlsx") {
   dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-
-  if (!file.exists(template))
-    stop("CEDEN 2.0 template not found at: ", template)
 
   projects <- unique(chem_v2_df$ProjectCode)
 
@@ -63,21 +72,27 @@ export_ceden_v2 <- function(chem_v2_df, output_dir = "data/output",
     filename <- file.path(output_dir,
                           paste0("CEDEN2_", proj, "_", today, ".xlsx"))
 
-    # Load a fresh copy of the template for each project
-    wb <- loadWorkbook(template)
+    wb <- createWorkbook()
 
-    # Write data starting at row 2 of Chemistry_Results (row 1 = headers)
-    # deleteData first to avoid stale cells from the template example rows
-    deleteData(wb, sheet = "Chemistry_Results",
-               rows = 2:10000, cols = 1:39, gridExpand = TRUE)
-
-    writeData(wb, sheet = "Chemistry_Results", x = sub_df,
-              startRow = 2, startCol = 1,
-              colNames = FALSE)   # headers already in template row 1
-
-    # Style: freeze pane, auto-width
+    addWorksheet(wb, "Chemistry_Results")
+    for (col in CEDEN2_COLS) if (!col %in% names(sub_df)) sub_df[[col]] <- NA
+    sub_df <- sub_df[, CEDEN2_COLS]
+    writeDataTable(wb, sheet = "Chemistry_Results", x = sub_df,
+                   tableStyle = "TableStyleMedium9", withFilter = TRUE)
     freezePane(wb, "Chemistry_Results", firstRow = TRUE)
-    setColWidths(wb, "Chemistry_Results", cols = 1:ncol(sub_df), widths = "auto")
+    setColWidths(wb, "Chemistry_Results", cols = seq_along(CEDEN2_COLS), widths = "auto")
+
+    if (file.exists(template)) {
+      for (sn in c("Format Information", "Constituent_Index", "Advanced_Vocabulary_Request")) {
+        tryCatch({
+          td <- readWorkbook(template, sheet = sn, colNames = TRUE)
+          addWorksheet(wb, sn)
+          if (nrow(td) > 0) writeDataTable(wb, sheet = sn, x = td,
+                                            tableStyle = "None", withFilter = FALSE)
+          else writeData(wb, sheet = sn, x = td)
+        }, error = function(e) addWorksheet(wb, sn))
+      }
+    }
 
     saveWorkbook(wb, filename, overwrite = TRUE)
     message("Exported CEDEN 2.0 -> ", filename)
