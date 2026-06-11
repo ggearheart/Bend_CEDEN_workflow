@@ -25,10 +25,12 @@ long_df <- bend_parsed %>%
   map_result() %>%
   join_analyte_map() %>%
   join_matrix_map()
-ceden_chem  <- build_chemistry(long_df)
-ceden_field <- build_field(long_df)
-saveRDS(ceden_chem,  "data/processed/ceden_chemistry.rds")
-saveRDS(ceden_field, "data/processed/ceden_field.rds")
+ceden_chem    <- build_chemistry(long_df)
+ceden_chem_v2 <- build_chemistry_v2(long_df)
+ceden_field   <- build_field(long_df)
+saveRDS(ceden_chem,    "data/processed/ceden_chemistry.rds")
+saveRDS(ceden_chem_v2, "data/processed/ceden_chemistry_v2.rds")
+saveRDS(ceden_field,   "data/processed/ceden_field.rds")
 message(glue("  {nrow(ceden_chem)} chemistry rows, {nrow(ceden_field)} field rows."))
 
 message("\n=== Step 3: Validate ===")
@@ -39,7 +41,8 @@ validate_field(ceden_field)
 
 message("\n=== Step 4: Export ===")
 source("R/04_export.R")
-export_ceden(ceden_chem, ceden_field)
+export_ceden(ceden_chem, ceden_field)      # legacy workbook
+export_ceden_v2(ceden_chem_v2)             # CEDEN 2.0 official template
 export_csv(ceden_chem, ceden_field)
 
 message("\nWorkflow complete. Check data/output/ for submission files.")

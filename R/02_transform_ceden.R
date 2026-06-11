@@ -123,6 +123,74 @@ build_chemistry <- function(df) {
     )
 }
 
+# ---------- build CEDEN 2.0 Chemistry_Results table ------------------------
+# Column order matches the official template exactly (39 columns).
+
+build_chemistry_v2 <- function(df) {
+  df %>%
+    transmute(
+      # --- Sample identity ---
+      `#StationCode`           = CustomerSample,
+      ProjectCode              = Project,
+      LabSampleID              = SampleID,
+      # CollectionDateTime: CEDEN 2.0 wants combined ISO-8601-style datetime
+      CollectionDateTime       = format(
+                                   as.POSIXct(paste(CollectDate, CollectTime),
+                                              format = "%Y-%m-%d %I:%M %p",
+                                              tz = "America/Los_Angeles"),
+                                   "%m/%d/%Y %H:%M"
+                                 ),
+      SampleAgencyCode         = "SWRCB",           # submitting agency — adjust as needed
+      SampleTypeCode           = ceden_sample_type,
+      MatrixCode               = ceden_matrix_code,
+      CollectionDepth          = NA_real_,
+      UnitCollectionDepth      = NA_character_,
+      SampleComments           = NA_character_,
+
+      # --- Prep / extraction ---
+      PrepPreservationName     = "Not Applicable",
+      PrepPreservationDateTime = NA_character_,
+      DigestExtractMethod      = "Not Applicable",
+      DigestExtractDateTime    = NA_character_,
+
+      # --- Lab batch / method ---
+      LabBatch                 = as.character(Batch),
+      LabAgencyCode            = "BendGenetics",
+      AnalysisDateTime         = format(CompletedDate, "%m/%d/%Y"),
+      MethodName               = method_name,
+
+      # --- Analyte result ---
+      AnalyteName              = ceden_analyte,
+      FractionName             = ceden_fraction,
+      DilutionFactor           = 1,
+      TestType                 = "Result",
+      ResultTypeCode           = "Actual",
+      Result                   = Result,
+      UnitName                 = ceden_units,
+
+      # ND flag: "No" = not detected, "Yes" = detected above MDL
+      DetectedAboveMDL         = if_else(nd_flag, "No", "Yes"),
+
+      MethodDetectionLimit     = MDL,
+      MinimumReportingLimit    = RL,
+
+      # --- QA ---
+      QACode                   = "None",
+      ExpectedValue            = NA_real_,
+      PercentRecovery          = NA_real_,
+      RelativePercentDifference = NA_real_,
+      RelativeStandardDeviation = NA_real_,
+      LabComments              = NA_character_,
+      ParticleSizeRange        = NA_character_,
+      QC_OriginalConc          = NA_real_,
+
+      # --- IDs ---
+      EQuIS_Sample_ID          = NA_character_,
+      Parent_SampleID          = NA_character_,
+      SampleID                 = BG_ID
+    )
+}
+
 # ---------- build CEDEN FieldResults / StationVisit table ------------------
 
 build_field <- function(df) {
@@ -156,14 +224,18 @@ if (!exists("SOURCED_BY_MASTER")) {
     join_analyte_map() %>%
     join_matrix_map()
 
-  ceden_chem  <- build_chemistry(long_df)
-  ceden_field <- build_field(long_df)
+  ceden_chem    <- build_chemistry(long_df)
+  ceden_chem_v2 <- build_chemistry_v2(long_df)
+  ceden_field   <- build_field(long_df)
 
-  saveRDS(ceden_chem,  "data/processed/ceden_chemistry.rds")
-  saveRDS(ceden_field, "data/processed/ceden_field.rds")
+  saveRDS(ceden_chem,    "data/processed/ceden_chemistry.rds")
+  saveRDS(ceden_chem_v2, "data/processed/ceden_chemistry_v2.rds")
+  saveRDS(ceden_field,   "data/processed/ceden_field.rds")
 
-  message("Chemistry rows: ", nrow(ceden_chem))
-  message("Field rows:     ", nrow(ceden_field))
+  message("Chemistry rows (v1): ", nrow(ceden_chem))
+  message("Chemistry rows (v2): ", nrow(ceden_chem_v2))
+  message("Field rows:          ", nrow(ceden_field))
   message("Saved -> data/processed/ceden_chemistry.rds")
+  message("Saved -> data/processed/ceden_chemistry_v2.rds")
   message("Saved -> data/processed/ceden_field.rds")
 }

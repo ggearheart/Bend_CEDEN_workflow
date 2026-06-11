@@ -5,3 +5,4 @@ data/output/
 .DS_Store
 *.Rhistory
 .Rproj.user/
+# keep templates/ tracked in git
