@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bend Genetics → CEDEN Workflow · SWAMP FHAB Program</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #2c7fb8;
+      --teal:    #1a9988;
+      --green:   #27ae60;
+      --amber:   #f39c12;
+      --light:   #f4f8fb;
+      --dark:    #1c2b3a;
+      --mid:     #4a6880;
+      --border:  #dce6ef;
+      --radius:  10px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--dark);
+      background: #fff;
+      line-height: 1.65;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+      color: #fff;
+      padding: 72px 24px 60px;
+      text-align: center;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: #a8e6d4; }
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 620px;
+      margin: 0 auto 32px;
+      opacity: 0.92;
+    }
+    .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 11px 24px;
+      border-radius: 7px;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none;
+      transition: opacity .15s, transform .15s;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-white  { background: #fff; color: var(--blue); }
+    .btn-ghost  { background: rgba(255,255,255,.15); color: #fff;
+                  border: 1.5px solid rgba(255,255,255,.5); }
+
+    /* ── Section ── */
+    section { padding: 64px 24px; }
+    .container { max-width: 1040px; margin: 0 auto; }
+    h2 {
+      font-size: 1.65rem; font-weight: 800;
+      color: var(--dark); margin-bottom: 8px;
+    }
+    .sub { color: var(--mid); font-size: 1rem; margin-bottom: 40px; }
+
+    /* ── Pipeline steps ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .step {
+      padding: 28px 22px;
+      background: #fff;
+      border-right: 1.5px solid var(--border);
+      position: relative;
+    }
+    .step:last-child { border-right: none; }
+    .step-num {
+      width: 34px; height: 34px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+    .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .step p  { font-size: 0.85rem; color: var(--mid); }
+    .step .script {
+      display: inline-block;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 8px;
+      color: var(--blue);
+    }
+
+    /* ── Features ── */
+    .features { background: var(--light); }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feat-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .feat-icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+    .feat-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .feat-card p  { font-size: 0.88rem; color: var(--mid); }
+
+    /* ── App mockup ── */
+    .mockup-wrap {
+      background: var(--dark);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,.25);
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .mockup-bar {
+      background: #2a3a4a;
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
+    .mockup-title {
+      flex: 1; text-align: center;
+      font-size: 0.78rem; color: rgba(255,255,255,.5);
+    }
+    .mockup-body { padding: 24px; }
+
+    /* Fake nav */
+    .app-nav {
+      display: flex; gap: 4px;
+      background: var(--blue);
+      padding: 8px 12px;
+      border-radius: 8px 8px 0 0;
+    }
+    .app-nav .tab {
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,.7);
+      cursor: default;
+    }
+    .app-nav .tab.active { background: rgba(255,255,255,.2); color: #fff; font-weight: 600; }
+
+    .app-content {
+      background: #f7fafc;
+      border: 1px solid #dce6ef;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 0;
+      min-height: 340px;
+    }
+    .app-sidebar {
+      background: #fff;
+      border-right: 1px solid var(--border);
+      padding: 16px;
+    }
+    .app-sidebar h4 { font-size: 0.75rem; font-weight: 700; color: var(--mid);
+                      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+    .radio-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+                 font-size: 0.82rem; }
+    .radio-dot { width: 14px; height: 14px; border-radius: 50%;
+                 border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center; }
+    .radio-dot.sel::after { content:''; width:6px; height:6px;
+                            border-radius:50%; background:var(--blue); display:block; }
+    .fake-file {
+      border: 2px dashed var(--border); border-radius: 7px;
+      padding: 14px; text-align: center;
+      font-size: 0.78rem; color: var(--mid); margin: 12px 0;
+    }
+    .fake-file strong { display: block; color: var(--dark); margin-bottom: 3px; }
+    .divider { height: 1px; background: var(--border); margin: 14px 0; }
+    .fake-btn {
+      width: 100%; padding: 9px;
+      background: var(--blue); color: #fff;
+      border-radius: 7px; font-size: 0.85rem; font-weight: 700;
+      text-align: center; margin-top: 8px;
+    }
+    .app-main { padding: 16px; }
+    .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .stat-box {
+      flex: 1; background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px;
+    }
+    .stat-box .label { font-size: 0.72rem; color: var(--mid); }
+    .stat-box .val   { font-size: 1.2rem; font-weight: 800; color: var(--blue); }
+    .stat-box.green .val { color: var(--green); }
+    .fake-table { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .fake-table .thead {
+      display: grid; grid-template-columns: 1.2fr 1.4fr 0.7fr 0.7fr 0.8fr;
+      background: var(--light); padding: 7px 12px;
+      font-size: 0.72rem; font-weight: 700; color: var(--mid); gap: 8px;
+    }
+    .fake-table .trow {
+      display: grid; grid-template-columns: 1.2fr 1.4fr 0.7fr 0.7fr 0.8fr;
+      padding: 7px 12px; font-size: 0.75rem; gap: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .fake-table .trow:nth-child(even) { background: #fafcfe; }
+    .pill {
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 700;
+    }
+    .pill-green { background: #d4edda; color: #155724; }
+    .pill-blue  { background: #d0eaf8; color: #0c4a6e; }
+
+    /* ── QA section ── */
+    .qa-section { background: #fff; }
+    .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media(max-width:640px){ .qa-grid { grid-template-columns: 1fr; } }
+    .qa-card {
+      border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .qa-card-header {
+      padding: 12px 16px; font-weight: 700; font-size: 0.9rem;
+      background: var(--light); border-bottom: 1px solid var(--border);
+    }
+    .qa-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 16px; font-size: 0.85rem;
+      border-bottom: 1px solid #f0f4f8;
+    }
+    .qa-row:last-child { border-bottom: none; }
+    .pct { font-weight: 700; }
+    .pct-100 { color: var(--green); }
+    .pct-mid { color: var(--amber); }
+    .pct-low { color: #e74c3c; }
+
+    /* ── Output files ── */
+    .outputs { background: var(--light); }
+    .output-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .output-card {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .output-card .ext {
+      font-family: monospace; font-size: 0.8rem;
+      background: var(--light); border: 1px solid var(--border);
+      border-radius: 5px; padding: 2px 8px;
+      display: inline-block; color: var(--blue);
+    }
+    .output-card h3 { font-size: 0.95rem; font-weight: 700; }
+    .output-card p  { font-size: 0.83rem; color: var(--mid); }
+
+    /* ── Install ── */
+    .install { }
+    pre {
+      background: var(--dark); color: #a8e6d4;
+      border-radius: var(--radius); padding: 20px 24px;
+      font-size: 0.88rem; overflow-x: auto;
+      line-height: 1.7;
+    }
+    pre .comment { color: #6b8fa8; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,.5);
+      text-align: center; padding: 32px 24px;
+      font-size: 0.85rem;
+    }
+    footer a { color: rgba(255,255,255,.75); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    @media(max-width:680px){
+      .app-content { grid-template-columns: 1fr; }
+      .app-sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-row { flex-wrap: wrap; }
+      .fake-table .thead,
+      .fake-table .trow { grid-template-columns: 1.2fr 1.4fr 0.7fr; }
+      .fake-table .thead > *:nth-child(n+4),
+      .fake-table .trow  > *:nth-child(n+4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <div class="badge">SWAMP · Freshwater HABs Program</div>
+  <h1>Bend Genetics <span>→</span> CEDEN<br>Submission Workflow</h1>
+  <p>Convert cyanotoxin lab results from Bend Genetics into ready-to-submit
+     CEDEN 2.0 chemistry tables — with built-in QA, editable mappings, and
+     one-click batch processing.</p>
+  <div class="btn-group">
+    <a href="https://github.com/ggearheart/Bend_CEDEN_workflow" class="btn btn-white">
+      ⬡ View on GitHub
+    </a>
+    <a href="https://github.com/ggearheart/Bend_CEDEN_workflow#quick-start" class="btn btn-ghost">
+      ↓ Get started
+    </a>
+  </div>
+</header>
+
+<!-- ── Pipeline steps ── -->
+<section>
+  <div class="container">
+    <h2>Four-step pipeline</h2>
+    <p class="sub">From raw Bend Genetics CSV to a validated CEDEN submission file.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Parse</h3>
+        <p>Read all results CSVs from a single upload or a whole folder. Dates and times are normalised automatically.</p>
+        <span class="script">01_parse_csv.R</span>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Transform</h3>
+        <p>Pivot wide → long, map Bend analyte names to CEDEN vocabulary, handle non-detects at the reporting limit.</p>
+        <span class="script">02_transform_ceden.R</span>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Validate</h3>
+        <p>Check every required CEDEN field, ND conventions, and unmapped analytes. Issues listed before export.</p>
+        <span class="script">03_validate.R</span>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Export</h3>
+        <p>Write the official CEDEN 2.0 Excel template or legacy workbook, plus flat CSVs. Downloadable as a zip.</p>
+        <span class="script">04_export.R</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── App mockup ── -->
+<section style="background:var(--dark); padding:64px 24px;">
+  <div class="container">
+    <h2 style="color:#fff; text-align:center; margin-bottom:8px;">Interactive Shiny app</h2>
+    <p class="sub" style="color:rgba(255,255,255,.6); text-align:center; margin-bottom:36px;">
+      Run locally with one command · no server required
+    </p>
+
+    <div class="mockup-wrap">
+      <div class="mockup-bar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span class="mockup-title">Bend Genetics → CEDEN — 127.0.0.1:3838</span>
+      </div>
+      <div class="mockup-body">
+        <div class="app-nav">
+          <div class="tab active">⬆ Process</div>
+          <div class="tab">⇄ Mapping</div>
+          <div class="tab">ℹ About</div>
+        </div>
+        <div class="app-content">
+          <div class="app-sidebar">
+            <h4>Input</h4>
+            <div class="radio-row"><div class="radio-dot sel"></div> Single file / email</div>
+            <div class="radio-row"><div class="radio-dot"></div> Batch folder</div>
+            <div class="fake-file">
+              <strong>20260610_SWAMP_results.csv</strong>
+              4 samples · 16 analyte rows
+            </div>
+            <div class="divider"></div>
+            <h4>Output format</h4>
+            <div class="radio-row"><div class="radio-dot sel"></div> CEDEN 2.0 (recommended)</div>
+            <div class="radio-row"><div class="radio-dot"></div> CEDEN Legacy</div>
+            <div class="divider"></div>
+            <div class="fake-btn">▶ Process</div>
+          </div>
+          <div class="app-main">
+            <div class="stat-row">
+              <div class="stat-box"><div class="label">Rows ready</div><div class="val">16</div></div>
+              <div class="stat-box"><div class="label">Samples</div><div class="val">4</div></div>
+              <div class="stat-box green"><div class="label">QA pass</div><div class="val">100%</div></div>
+            </div>
+            <div class="fake-table">
+              <div class="thead">
+                <span>#StationCode</span><span>AnalyteName</span><span>Result</span><span>UnitName</span><span>DetectedAboveMDL</span>
+              </div>
+              <div class="trow"><span>201MUD500</span><span>Anatoxin-a</span><span>0.15</span><span>ng/g</span><span><span class="pill pill-blue">No</span></span></div>
+              <div class="trow"><span>201MUD500</span><span>Microcystin</span><span>0.20</span><span>ng/g</span><span><span class="pill pill-blue">No</span></span></div>
+              <div class="trow"><span>201PNG050</span><span>Anatoxin-a</span><span>0.15</span><span>ng/g</span><span><span class="pill pill-blue">No</span></span></div>
+              <div class="trow"><span>201PNG050</span><span>Microcystin</span><span>0.20</span><span>ng/g</span><span><span class="pill pill-blue">No</span></span></div>
+              <div class="trow"><span>201LAG335</span><span>Saxitoxin</span><span>0.02</span><span>ng/g</span><span><span class="pill pill-blue">No</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section class="features">
+  <div class="container">
+    <h2>Features</h2>
+    <p class="sub">Everything needed to clear a multi-year backlog of FHAB submissions.</p>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon">📂</div>
+        <h3>Single file or batch folder</h3>
+        <p>Upload one results CSV from an email attachment, or point to a folder and process every file at once.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⇄</div>
+        <h3>Editable analyte mapping</h3>
+        <p>View and edit Bend → CEDEN analyte names, units, and methods in-app. Changes save back to the lookup CSV.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📋</div>
+        <h3>CEDEN 2.0 &amp; Legacy</h3>
+        <p>Output into the official CEDEN 2.0 Excel template (39-column <em>Chemistry_Results</em> sheet) or the legacy WaterChemistry format.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔬</div>
+        <h3>5% QA spot-check</h3>
+        <p>Automatically samples 5% of output rows and runs 10 completeness and correctness checks. Results shown as a colour-coded report.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">✅</div>
+        <h3>Pre-export validation</h3>
+        <p>Required fields, ND = RL consistency, unmapped analytes, and matrix codes all checked before a file is written.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⬇</div>
+        <h3>One-click zip download</h3>
+        <p>All output files (Excel + CSV) bundled into a single zip for submission or archiving.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── QA Report preview ── -->
+<section class="qa-section">
+  <div class="container">
+    <h2>QA spot-check report</h2>
+    <p class="sub">Randomly samples 5% of rows (min 5) and evaluates 10 checks per record.</p>
+    <div class="qa-grid">
+      <div class="qa-card">
+        <div class="qa-card-header">CEDEN 2.0 checks</div>
+        <div class="qa-row"><span>StationCode present</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>CollectionDateTime present</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>AnalyteName present</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>Result is numeric</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>UnitName present</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>MatrixCode present</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>MethodName present</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>DetectedAboveMDL is Yes/No</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>Non-detects equal MinimumReportingLimit</span><span class="pct pct-100">100%</span></div>
+        <div class="qa-row"><span>LabAgencyCode present</span><span class="pct pct-100">100%</span></div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-card-header">Summary</div>
+        <div class="qa-row"><span>Records in batch</span><span>16</span></div>
+        <div class="qa-row"><span>Records spot-checked</span><span>5 (31%)</span></div>
+        <div class="qa-row"><span>Checks per record</span><span>10</span></div>
+        <div class="qa-row"><span>Total checks run</span><span>50</span></div>
+        <div class="qa-row"><span>Checks passed</span><span class="pct pct-100">50 / 50</span></div>
+        <div class="qa-row" style="font-weight:700;"><span>Overall pass rate</span><span class="pct pct-100">100%</span></div>
+        <div style="padding:16px; font-size:0.83rem; color:var(--mid);">
+          Pass rate ≥ 95% shown in green · 80–94% amber · below 80% red.
+          Row-level detail table highlights individual failures.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Output files ── -->
+<section class="outputs">
+  <div class="container">
+    <h2>Output files</h2>
+    <p class="sub">All files written to <code>data/output/</code> and bundled into a download zip.</p>
+    <div class="output-grid">
+      <div class="output-card">
+        <span class="ext">.xlsx</span>
+        <h3>CEDEN 2.0 workbook</h3>
+        <p><code>CEDEN2_&lt;project&gt;_&lt;date&gt;.xlsx</code> — official template with Chemistry_Results, Constituent_Index, and Advanced_Vocabulary_Request sheets.</p>
+      </div>
+      <div class="output-card">
+        <span class="ext">.xlsx</span>
+        <h3>Legacy workbook</h3>
+        <p><code>CEDEN_&lt;project&gt;_&lt;date&gt;.xlsx</code> — WaterChemistry and FieldResults sheets in legacy format.</p>
+      </div>
+      <div class="output-card">
+        <span class="ext">.csv</span>
+        <h3>Flat CSVs</h3>
+        <p><code>CEDEN_WaterChemistry_&lt;date&gt;.csv</code> and <code>CEDEN_FieldResults_&lt;date&gt;.csv</code> for scripted or bulk upload.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install ── -->
+<section class="install">
+  <div class="container">
+    <h2>Get started</h2>
+    <p class="sub">Requires R 4.1+ and RStudio (recommended).</p>
+    <pre><span class="comment"># 1. Clone the repo</span>
+git clone https://github.com/ggearheart/Bend_CEDEN_workflow.git
+cd Bend_CEDEN_workflow
+
+<span class="comment"># 2. Drop Bend results CSVs into data/raw/</span>
+cp /path/to/20260610_SWAMP_CDFW_results.csv data/raw/
+
+<span class="comment"># 3. Launch the Shiny app (installs missing packages automatically)</span>
+Rscript launch_app.R
+
+<span class="comment"># — or run the headless pipeline —</span>
+Rscript run_workflow.R</pre>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>Built for the <strong>SWAMP Freshwater HABs Program</strong> ·
+     State Water Resources Control Board</p>
+  <p style="margin-top:8px;">
+    <a href="https://github.com/ggearheart/Bend_CEDEN_workflow">GitHub</a> ·
+    <a href="https://ceden.waterboards.ca.gov">CEDEN</a> ·
+    <a href="https://www.waterboards.ca.gov/water_issues/programs/swamp/">SWAMP</a>
+  </p>
+</footer>
+
+</body>
+</html>
