@@ -31,7 +31,7 @@ pivot_to_long <- function(df) {
   # Identify the analyte columns (everything after BG_ID / Notes)
   id_cols <- c("SampleID", "Batch", "Project", "Location", "SampleType",
                "CollectDate", "CollectTime", "ReceivedDate", "ReceivedTime",
-               "CompletedDate", "Customer", "CustomerSample", "BG_ID", "Notes")
+               "Completed", "CompletedDate", "Customer", "CustomerSample", "BG_ID", "Notes")
 
   analyte_cols <- setdiff(names(df), id_cols)
 
@@ -41,7 +41,7 @@ pivot_to_long <- function(df) {
       names_to  = "bend_analyte",
       values_to = "raw_result"
     ) %>%
-    filter(!is.na(raw_result))  # drop blank cells (analyte not applicable to matrix)
+    filter(!is.na(raw_result), trimws(raw_result) != "")  # drop blank/NA cells
 }
 
 # ---------- map result values ----------------------------------------------
@@ -133,13 +133,9 @@ build_chemistry_v2 <- function(df) {
       `#StationCode`           = CustomerSample,
       ProjectCode              = Project,
       LabSampleID              = SampleID,
-      # CollectionDateTime: CEDEN 2.0 wants combined ISO-8601-style datetime
-      CollectionDateTime       = format(
-                                   as.POSIXct(paste(CollectDate, CollectTime),
-                                              format = "%Y-%m-%d %I:%M %p",
-                                              tz = "America/Los_Angeles"),
-                                   "%m/%d/%Y %H:%M"
-                                 ),
+      # CollectionDateTime: CEDEN 2.0 wants MM/DD/YYYY HH:MM
+      # CollectTime is already HH:MM (24-hr) after parse_bend_csv conversion
+      CollectionDateTime       = paste(format(CollectDate, "%m/%d/%Y"), CollectTime),
       SampleAgencyCode         = "SWRCB",           # submitting agency — adjust as needed
       SampleTypeCode           = ceden_sample_type,
       MatrixCode               = ceden_matrix_code,
