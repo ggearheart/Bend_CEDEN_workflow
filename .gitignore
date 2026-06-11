@@ -1,0 +1,7 @@
+data/raw/*.pdf
+data/raw/*.csv
+data/processed/
+data/output/
+.DS_Store
+*.Rhistory
+.Rproj.user/

@@ -1,0 +1,21 @@
+bend_analyte,bend_units,ceden_analyte,ceden_units,ceden_fraction,method_name,matrix_type
+Anatoxin-a (ug/L),ug/L,Anatoxin-a,ug/L,Total,ELISA,water
+Microcystin/Nod. (ug/L),ug/L,Microcystin,ug/L,Total,ELISA,water
+Cylindrospermopsin (ug/L),ug/L,Cylindrospermopsin,ug/L,Total,ELISA,water
+Saxitoxin (ug/L),ug/L,Saxitoxin,ug/L,Total,ELISA,water
+qPCR-anaC (copies/mL),copies/mL,Anabaena circinalis 16S rRNA gene,copies/mL,Total,qPCR,water
+qPCR-mcyE (copies/mL),copies/mL,mcyE gene,copies/mL,Total,qPCR,water
+qPCR-cyrA (copies/mL),copies/mL,cyrA gene,copies/mL,Total,qPCR,water
+qPCR-sxtA (copies/mL),copies/mL,sxtA gene,copies/mL,Total,qPCR,water
+qPCR-Cy16S (copies/mL),copies/mL,Cyanobacteria 16S rRNA gene,copies/mL,Total,qPCR,water
+Anatoxin-a (toxins/g),ng/g,Anatoxin-a,ng/g,Total,ELISA,benthic
+Microcystin (toxins/g),ng/g,Microcystin,ng/g,Total,ELISA,benthic
+Cylindrospermopsin (toxins/g),ng/g,Cylindrospermopsin,ng/g,Total,ELISA,benthic
+Saxitoxin (toxin/g),ng/g,Saxitoxin,ng/g,Total,ELISA,benthic
+qPCR-anaC (copies/g),copies/g,Anabaena circinalis 16S rRNA gene,copies/g,Total,qPCR,benthic
+qPCR-mcyE (copies/g),copies/g,mcyE gene,copies/g,Total,qPCR,benthic
+qPCR-cyrA (copies/g),copies/g,cyrA gene,copies/g,Total,qPCR,benthic
+qPCR-sxtA (copies/g),copies/g,sxtA gene,copies/g,Total,qPCR,benthic
+qPCR-Cy16S (copies/g),copies/g,Cyanobacteria 16S rRNA gene,copies/g,Total,qPCR,benthic
+Chloropyhll-a (ug/L),ug/L,Chlorophyll a,ug/L,Total,Spectrophotometry,water
+Pheophytin-a (ug/L),ug/L,Pheophytin a,ug/L,Total,Spectrophotometry,water
