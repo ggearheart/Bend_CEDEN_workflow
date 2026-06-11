@@ -16,6 +16,7 @@ library(reactable)
 library(zip)
 
 # shiny::runApp() sets cwd to the app directory; all paths are relative to app/
+SOURCED_BY_MASTER <- TRUE   # suppress standalone run blocks in each script
 source("R/01_parse_csv.R")
 source("R/02_transform_ceden.R")
 source("R/03_validate.R")
